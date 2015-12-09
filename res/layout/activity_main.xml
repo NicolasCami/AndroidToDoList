@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <EditText
+        android:id="@+id/editTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tasksListView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/btnNewTask"
+        android:hint="Tache"
+        android:textColor="@color/white"
+        android:textColorHint="@color/darkGrey"
+        android:textSize="20sp" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/btnNewTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="+" />
+    
+    <ListView
+        android:id="@+id/tasksListView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/btnNewTask"
+        android:background="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="#CCCCCC"
+        android:dividerHeight="1dp"
+        android:paddingLeft="2dp" >
+
+    </ListView>
+
+</RelativeLayout>

@@ -1,0 +1,5 @@
+
+    <menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item android:id="@+id/deleteAll" android:titleCondensed="Suppr" android:visible="true" android:title="Supprimer tout"></item>
+        <item android:id="@+id/deleteDone" android:visible="true" android:title="Supprimer Finis" android:titleCondensed="Suppr finis"></item>
+    </menu>
