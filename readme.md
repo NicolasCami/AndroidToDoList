@@ -1,7 +1,7 @@
 # Android ToDo List
 
 Simple TODO List for Android.
-Project made with eclipse and ADT plugin.
+Project made with Android Studio.
 
 ## Installation and Compilation
 
@@ -9,4 +9,4 @@ Project made with eclipse and ADT plugin.
 git clone https://github.com/NicolasCami/AndroidToDoList.git
 ```
 
-Then open the project with eclipse. You will need the ADT plugin.
+Then open the project Android Studio.
