@@ -13,12 +13,10 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/btnNewTask"
-        android:hint="Tache"
+        android:hint="@string/new_task"
         android:textColor="@color/colorAccent"
         android:textColorHint="@color/darkGrey"
         android:textSize="20sp" >
-
-        <requestFocus />
     </EditText>
 
     <Button

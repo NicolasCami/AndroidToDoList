@@ -47,7 +47,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
         CheckBox doneCheckBox = (CheckBox) rowView.findViewById(R.id.doneCheckBox);
         doneCheckBox.setChecked(task.isDone());
         DoneTaskListener doneTaskListener = new DoneTaskListener(task, doneCheckBox, this, _taskDAO);
-        doneCheckBox.setOnClickListener(doneTaskListener);
+        rowView.setOnClickListener(doneTaskListener);
 
         return rowView;
     }

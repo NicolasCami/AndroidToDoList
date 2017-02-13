@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">ToDoList</string>
+    <string name="new_task">New Task</string>
     <string name="dialog_confirm_tasks_deletion">Are you sure you want to delete those tasks ?</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
