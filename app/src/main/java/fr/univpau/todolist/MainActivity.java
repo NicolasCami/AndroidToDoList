@@ -31,20 +31,23 @@ public class MainActivity extends AppCompatActivity implements NewCategoryDialog
     TaskListAdapter     _taskAdaper;
     TaskDAO             _tasksDAO;
     TaskCategoryDAO     _taskCategoryDAO;
-    int                 _stackLevel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         _tasksDAO = new TaskDAO(this);
         _taskCategoryDAO = new TaskCategoryDAO(this);
-        _categoryList = _taskCategoryDAO.getAllTaskCategory();
-        _stackLevel = 0;
 
-        ListView listview = (ListView) findViewById(R.id.categoryListView);
-        _taskAdaper = new TaskListAdapter(this, R.layout.todolist_item, _categoryList);
-        listview.setAdapter(_taskAdaper);
+        refreshList();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        refreshList();
     }
 
     @Override
@@ -71,13 +74,18 @@ public class MainActivity extends AppCompatActivity implements NewCategoryDialog
         TaskCategory newTaskCategory = new TaskCategory(title);
         _taskCategoryDAO.insertTaskCategory(newTaskCategory);
 
-        ListView listview = (ListView) findViewById(R.id.categoryListView);
-        _taskAdaper = new TaskListAdapter(this, R.layout.todolist_item, _categoryList);
-        listview.setAdapter(_taskAdaper);
+        refreshList();
     }
 
     @Override
     public void onCancelNewCategory(DialogFragment dialog) {
         // nothing to do...
+    }
+
+    public void refreshList() {
+        _categoryList = _taskCategoryDAO.getAllTaskCategory();
+        ListView listview = (ListView) findViewById(R.id.categoryListView);
+        _taskAdaper = new TaskListAdapter(this, R.layout.todolist_item, _categoryList);
+        listview.setAdapter(_taskAdaper);
     }
 }

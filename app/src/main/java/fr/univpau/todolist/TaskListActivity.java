@@ -15,8 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.univpau.adapter.TaskAdapter;
+import fr.univpau.dao.TaskCategoryDAO;
 import fr.univpau.dao.TaskDAO;
 import fr.univpau.dialog.ConfirmDeleteAllDialog;
+import fr.univpau.dialog.ConfirmDeleteCategoryDialog;
 import fr.univpau.dialog.ConfirmDeleteDialog;
 import fr.univpau.listener.NewTaskListener;
 import fr.univpau.util.Task;
@@ -25,13 +27,14 @@ import fr.univpau.util.TaskCategory;
 /**
  * Activity that list all tasks related to a category.
  */
-public class TaskListActivity extends AppCompatActivity implements ConfirmDeleteDialog.ConfirmDeleteDialogListener, ConfirmDeleteAllDialog.ConfirmDeleteAllDialogListener {
+public class TaskListActivity extends AppCompatActivity implements ConfirmDeleteDialog.ConfirmDeleteDialogListener, ConfirmDeleteAllDialog.ConfirmDeleteAllDialogListener, ConfirmDeleteCategoryDialog.ConfirmDeleteCategoryDialogListener {
 
     public final static String EXTRA_CATEGORY = "fr.univpau.todolist.CATEGORY";
 
     List<Task> _tasksList;
     TaskAdapter _taskAdaper;
     TaskDAO _tasksDAO;
+    TaskCategoryDAO taskCateogryDAO;
     TaskCategory taskCategory;
 
     @Override
@@ -39,15 +42,18 @@ public class TaskListActivity extends AppCompatActivity implements ConfirmDelete
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_list);
         _tasksDAO = new TaskDAO(this);
+        taskCateogryDAO = new TaskCategoryDAO(this);
         taskCategory = null;
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             taskCategory = (TaskCategory)getIntent().getSerializableExtra(EXTRA_CATEGORY);
             _tasksList = _tasksDAO.getTasks(taskCategory);
+            Log.i("debug", ""+taskCategory.getId());
         }
         else {
             _tasksList = _tasksDAO.getAllTasks();
+            Log.i("debug", "NO CATEGORY");
         }
 
         ListView listview = (ListView) findViewById(R.id.tasksListView);
@@ -69,6 +75,10 @@ public class TaskListActivity extends AppCompatActivity implements ConfirmDelete
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.deleteCategory:
+                DialogFragment deleteListDialog = new ConfirmDeleteCategoryDialog();
+                deleteListDialog.show(getSupportFragmentManager(), "confirmDeleteCategory");
+                return true;
             case R.id.deleteAll:
                 DialogFragment deleteAllDialog = new ConfirmDeleteAllDialog();
                 deleteAllDialog.show(getSupportFragmentManager(), "confirmDeleteAll");
@@ -102,6 +112,21 @@ public class TaskListActivity extends AppCompatActivity implements ConfirmDelete
         _taskAdaper.notifyDataSetChanged();
     }
 
+    private void deleteCategory() {
+        // remove all tasks under this category
+        deleteTasks();
+
+        // delete the category
+        if(taskCategory != null)
+        {
+            Log.i("debug", "delete " + taskCategory.getId());
+            taskCateogryDAO.deleteTaskCategory(taskCategory.getId());
+        }
+
+        // leave this activity
+        finish();
+    }
+
     @Override
     public void onConfirmDelete(DialogFragment dialog) {
         deleteTasksDone();
@@ -119,6 +144,16 @@ public class TaskListActivity extends AppCompatActivity implements ConfirmDelete
 
     @Override
     public void onCancelDeleteAll(DialogFragment dialog) {
+        // Do nothing
+    }
+
+    @Override
+    public void onConfirmDeleteCategory(DialogFragment dialog) {
+        deleteCategory();
+    }
+
+    @Override
+    public void onCancelDeleteCategory(DialogFragment dialog) {
         // Do nothing
     }
 }
