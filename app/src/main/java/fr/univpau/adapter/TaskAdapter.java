@@ -44,6 +44,16 @@ public class TaskAdapter extends ArrayAdapter<Task> {
         TextView itemDate = (TextView) rowView.findViewById(R.id.itemDate);
         itemDate.setText(task.getDate());
 
+        TextView itemCategory = (TextView) rowView.findViewById(R.id.itemCategory);
+        if(task.getCategory() != null)
+        {
+            itemCategory.setText(task.getCategory().getTitle());
+        }
+        else
+        {
+            itemCategory.setText("Undefined");
+        }
+
         CheckBox doneCheckBox = (CheckBox) rowView.findViewById(R.id.doneCheckBox);
         doneCheckBox.setChecked(task.isDone());
         DoneTaskListener doneTaskListener = new DoneTaskListener(task, doneCheckBox, this, _taskDAO);

@@ -5,4 +5,5 @@
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
     <string name="dialog_confirm_tasks_deletion_all">Are you sure you want to delete ALL tasks ?</string>
+    <string name="new_category">New list</string>
 </resources>

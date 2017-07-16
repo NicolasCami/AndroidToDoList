@@ -1,107 +1,83 @@
 package fr.univpau.todolist;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
-import fr.univpau.adapter.TaskAdapter;
+import fr.univpau.adapter.TaskListAdapter;
 import fr.univpau.dao.TaskDAO;
+import fr.univpau.dao.TaskCategoryDAO;
 import fr.univpau.dialog.ConfirmDeleteAllDialog;
 import fr.univpau.dialog.ConfirmDeleteDialog;
-import fr.univpau.listener.NewTaskListener;
+import fr.univpau.dialog.NewCategoryDialog;
 import fr.univpau.util.Task;
+import fr.univpau.util.TaskCategory;
 
-public class MainActivity extends AppCompatActivity implements ConfirmDeleteDialog.ConfirmDeleteDialogListener, ConfirmDeleteAllDialog.ConfirmDeleteAllDialogListener {
+public class MainActivity extends AppCompatActivity implements NewCategoryDialog.NewCategoryDialogListener {
 
-    List<Task> _tasksList;
-    TaskAdapter _taskAdaper;
-    TaskDAO _tasksDAO;
+    List<TaskCategory>  _categoryList;
+    TaskListAdapter     _taskAdaper;
+    TaskDAO             _tasksDAO;
+    TaskCategoryDAO     _taskCategoryDAO;
+    int                 _stackLevel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         _tasksDAO = new TaskDAO(this);
-        _tasksList = _tasksDAO.getAllTasks();
+        _taskCategoryDAO = new TaskCategoryDAO(this);
+        _categoryList = _taskCategoryDAO.getAllTaskCategory();
+        _stackLevel = 0;
 
-        ListView listview = (ListView) findViewById(R.id.tasksListView);
-        _taskAdaper = new TaskAdapter(this, R.layout.todolist_item, _tasksList, _tasksDAO);
+        ListView listview = (ListView) findViewById(R.id.categoryListView);
+        _taskAdaper = new TaskListAdapter(this, R.layout.todolist_item, _categoryList);
         listview.setAdapter(_taskAdaper);
-
-        Button btnNewTask = (Button) findViewById(R.id.btnNewTask);
-        NewTaskListener newTaskListener = new NewTaskListener(_tasksList, (EditText) findViewById(R.id.editTitle), _taskAdaper, _tasksDAO);
-        btnNewTask.setOnClickListener(newTaskListener);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
+        inflater.inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.deleteAll:
-                DialogFragment deleteAllDialog = new ConfirmDeleteAllDialog();
-                deleteAllDialog.show(getSupportFragmentManager(), "confirmDeleteAll");
-                return true;
-            case R.id.deleteDone:
-                DialogFragment deleteDialog = new ConfirmDeleteDialog();
-                deleteDialog.show(getSupportFragmentManager(), "confirmDelete");
+            case R.id.newCategory:
+                DialogFragment deleteAllDialog = new NewCategoryDialog();
+                deleteAllDialog.show(getSupportFragmentManager(), "newCategory");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void deleteTasks() {
-        for(Task task : _tasksList) {
-            _tasksDAO.deleteTask(task.getId());
-        }
-        _tasksList.clear();
-        _taskAdaper.notifyDataSetChanged();
-    }
+    @Override
+    public void onConfirmNewCategory(DialogFragment dialog, String title) {
+        TaskCategory newTaskCategory = new TaskCategory(title);
+        _taskCategoryDAO.insertTaskCategory(newTaskCategory);
 
-    private void deleteTasksDone() {
-        List<Task> toRemove = new ArrayList<Task>();
-        for(Task task : _tasksList) {
-            if(task.isDone()) {
-                _tasksDAO.deleteTask(task.getId());
-                toRemove.add(task);
-            }
-        }
-        _tasksList.removeAll(toRemove);
-        _taskAdaper.notifyDataSetChanged();
+        ListView listview = (ListView) findViewById(R.id.categoryListView);
+        _taskAdaper = new TaskListAdapter(this, R.layout.todolist_item, _categoryList);
+        listview.setAdapter(_taskAdaper);
     }
 
     @Override
-    public void onConfirmDelete(DialogFragment dialog) {
-        deleteTasksDone();
-    }
-
-    @Override
-    public void onCancelDelete(DialogFragment dialog) {
-        // Do nothing
-    }
-
-    @Override
-    public void onConfirmDeleteAll(DialogFragment dialog) {
-        deleteTasks();
-    }
-
-    @Override
-    public void onCancelDeleteAll(DialogFragment dialog) {
-        // Do nothing
+    public void onCancelNewCategory(DialogFragment dialog) {
+        // nothing to do...
     }
 }

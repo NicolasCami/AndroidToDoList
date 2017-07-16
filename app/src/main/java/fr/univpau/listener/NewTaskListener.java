@@ -12,10 +12,12 @@ import java.util.List;
 import fr.univpau.adapter.TaskAdapter;
 import fr.univpau.dao.TaskDAO;
 import fr.univpau.util.Task;
+import fr.univpau.util.TaskCategory;
 
 public class NewTaskListener implements View.OnClickListener {
 
     List<Task> tasks;
+    TaskCategory taskCategory;
     EditText editTitle;
     TaskAdapter taskAdaper;
     TaskDAO _taskDAO;
@@ -24,8 +26,9 @@ public class NewTaskListener implements View.OnClickListener {
 
     }
 
-    public NewTaskListener(List<Task> tasks, EditText editTitle, TaskAdapter taskAdaper, TaskDAO taskDAO) {
+    public NewTaskListener(List<Task> tasks, TaskCategory category, EditText editTitle, TaskAdapter taskAdaper, TaskDAO taskDAO) {
         this.tasks = tasks;
+        this.taskCategory = category;
         this.editTitle = editTitle;
         this.taskAdaper = taskAdaper;
         _taskDAO = taskDAO;
@@ -38,10 +41,9 @@ public class NewTaskListener implements View.OnClickListener {
         calendar.setTime(trialTime);
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         String dateString = sdf.format(calendar.getTime());
-        Task newTask = new Task(editTitle.getText().toString(), dateString, false);
+        Task newTask = new Task(editTitle.getText().toString(), dateString, false, taskCategory);
         tasks.add(newTask);
         _taskDAO.insertTask(newTask);
-        //Log.i("DEBUG", tasks.toString());
         taskAdaper.notifyDataSetChanged();
         editTitle.setText("");
     }
