@@ -1,7 +1,5 @@
 package fr.univpau.todolist;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,35 +8,28 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import fr.univpau.adapter.TaskListAdapter;
 import fr.univpau.dao.TaskDAO;
 import fr.univpau.dao.TaskCategoryDAO;
-import fr.univpau.dialog.ConfirmDeleteAllDialog;
-import fr.univpau.dialog.ConfirmDeleteDialog;
 import fr.univpau.dialog.NewCategoryDialog;
-import fr.univpau.util.Task;
 import fr.univpau.util.TaskCategory;
 
 public class MainActivity extends AppCompatActivity implements NewCategoryDialog.NewCategoryDialogListener {
 
-    List<TaskCategory>  _categoryList;
-    TaskListAdapter     _taskAdaper;
-    TaskDAO             _tasksDAO;
-    TaskCategoryDAO     _taskCategoryDAO;
+    List<TaskCategory>  m_categoryList;
+    TaskListAdapter     m_taskAdaper;
+    TaskDAO             m_tasksDAO;
+    TaskCategoryDAO     m_taskCategoryDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        _tasksDAO = new TaskDAO(this);
-        _taskCategoryDAO = new TaskCategoryDAO(this);
+        m_tasksDAO = new TaskDAO(this);
+        m_taskCategoryDAO = new TaskCategoryDAO(this);
 
         refreshList();
     }
@@ -72,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements NewCategoryDialog
     @Override
     public void onConfirmNewCategory(DialogFragment dialog, String title) {
         TaskCategory newTaskCategory = new TaskCategory(title);
-        _taskCategoryDAO.insertTaskCategory(newTaskCategory);
+        m_taskCategoryDAO.insertTaskCategory(newTaskCategory);
 
         refreshList();
     }
@@ -83,9 +74,9 @@ public class MainActivity extends AppCompatActivity implements NewCategoryDialog
     }
 
     public void refreshList() {
-        _categoryList = _taskCategoryDAO.getAllTaskCategory();
+        m_categoryList = m_taskCategoryDAO.getAllTaskCategory();
         ListView listview = (ListView) findViewById(R.id.categoryListView);
-        _taskAdaper = new TaskListAdapter(this, R.layout.todolist_item, _categoryList);
-        listview.setAdapter(_taskAdaper);
+        m_taskAdaper = new TaskListAdapter(this, R.layout.todolist_item, m_categoryList);
+        listview.setAdapter(m_taskAdaper);
     }
 }

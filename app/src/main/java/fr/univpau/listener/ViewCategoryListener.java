@@ -9,25 +9,25 @@ import fr.univpau.util.TaskCategory;
 
 public class ViewCategoryListener implements View.OnClickListener {
 
-    TaskCategory _category;
-    Context _context;
-    Intent _intent;
+    TaskCategory    m_category;
+    Context         m_context;
+    Intent          m_intent;
 
     public ViewCategoryListener() {
 
     }
 
     public ViewCategoryListener(Context context, Class<?> cls, TaskCategory category) {
-        _category = category;
-        _context = context;
-        _intent = new Intent();
-        _intent.setClass(context, cls);
+        m_category = category;
+        m_context = context;
+        m_intent = new Intent();
+        m_intent.setClass(context, cls);
     }
 
     @Override
     public void onClick(View v) {
-        _intent.putExtra(TaskListActivity.EXTRA_CATEGORY, _category);
-        _context.startActivity(_intent);
+        m_intent.putExtra(TaskListActivity.EXTRA_CATEGORY, m_category);
+        m_context.startActivity(m_intent);
     }
 
 }

@@ -11,26 +11,26 @@ import fr.univpau.util.TaskCategorySQLiteHelper;
 
 public class TaskCategoryDAO {
 
-    TaskCategorySQLiteHelper _sqlHelper;
-    Context _context;
+    TaskCategorySQLiteHelper    m_sqlHelper;
+    Context                     m_context;
 
     public TaskCategoryDAO(Context context) {
-        _sqlHelper = new TaskCategorySQLiteHelper(context);
-        _context = context;
+        m_sqlHelper = new TaskCategorySQLiteHelper(context);
+        m_context = context;
     }
 
     public void insertTaskCategory(TaskCategory taskCategory) {
-        long id = _sqlHelper.insertTaskCategory(taskCategory.getTitle());
+        long id = m_sqlHelper.insertTaskCategory(taskCategory.getTitle());
         taskCategory.setId((int) id);
     }
 
     public void updateTaskCategory(TaskCategory taskCategory) {
-        _sqlHelper.updateTaskCategory(taskCategory.getId(), taskCategory.getTitle());
+        m_sqlHelper.updateTaskCategory(taskCategory.getId(), taskCategory.getTitle());
     }
 
     public List<TaskCategory> getAllTaskCategory() {
         List<TaskCategory> objectList = new ArrayList<TaskCategory>();
-        Cursor res =  _sqlHelper.selectAllTaskCategory();
+        Cursor res =  m_sqlHelper.selectAllTaskCategory();
 
         while(res.isAfterLast() == false) {
             TaskCategory taskCategory = new TaskCategory(res.getInt(res.getColumnIndex(TaskCategorySQLiteHelper.COLUMN_TASK_CATEGORY_ID)),
@@ -44,7 +44,7 @@ public class TaskCategoryDAO {
     public List<TaskCategory> getTaskCategory(int id) {
         List<TaskCategory> objectList = new ArrayList<TaskCategory>();
 
-        Cursor res =  _sqlHelper.selectTaskCategory(id);
+        Cursor res =  m_sqlHelper.selectTaskCategory(id);
 
         while(res.isAfterLast() == false) {
             TaskCategory taskCategory = new TaskCategory(res.getInt(res.getColumnIndex(TaskCategorySQLiteHelper.COLUMN_TASK_CATEGORY_ID)),
@@ -57,7 +57,7 @@ public class TaskCategoryDAO {
     }
 
     public void deleteTaskCategory(int id) {
-        _sqlHelper.deleteTaskCategory(id);
+        m_sqlHelper.deleteTaskCategory(id);
     }
 
 }

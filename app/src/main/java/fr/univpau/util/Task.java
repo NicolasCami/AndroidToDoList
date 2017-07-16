@@ -4,80 +4,80 @@ public class Task {
 
     final public static String DEFAULT_CATEGORY = "Default";
 
-    private int             id;
-    private String          title;
-    private String          date;
-    private boolean         done;
-    private TaskCategory    category;
+    private int             m_id;
+    private String          m_title;
+    private String          m_date;
+    private boolean         m_done;
+    private TaskCategory    m_category;
 
     public Task() {
-        this.title = "";
-        this.date = "";
-        this.done = false;
-        this.category = null;
+        m_title = "";
+        m_date = "";
+        m_done = false;
+        m_category = null;
     }
 
     public Task(String title, String date, boolean done, TaskCategory category) {
-        this.title = title;
-        this.date = date;
-        this.done = done;
-        this.category = category;
+        m_title = title;
+        m_date = date;
+        m_done = done;
+        m_category = category;
     }
 
     public Task(int id, String title, String date, boolean done) {
-        this.id = id;
-        this.title = title;
-        this.date = date;
-        this.done = done;
-        this.category = null;
+        m_id = id;
+        m_title = title;
+        m_date = date;
+        m_done = done;
+        m_category = null;
     }
 
     public Task(int id, String title, String date, boolean done, TaskCategory category) {
-        this.id = id;
-        this.title = title;
-        this.date = date;
-        this.done = done;
-        this.category = category;
+        m_id = id;
+        m_title = title;
+        m_date = date;
+        m_done = done;
+        m_category = category;
     }
 
     public int getId() {
-        return id;
+        return m_id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        m_id = id;
     }
 
     public String getTitle() {
-        return title;
+        return m_title;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        m_title = title;
     }
 
     public String getDate() {
-        return date;
+        return m_date;
     }
 
     public void setDate(String date) {
-        this.date = date;
+        m_date = date;
     }
 
     public TaskCategory getCategory() {
-        return category;
+        return m_category;
     }
 
     public void setCategory(TaskCategory category) {
-        this.category = category;
+        m_category = category;
     }
 
     public boolean isDone() {
-        return done;
+        return m_done;
     }
 
     public void setDone(boolean done) {
-        this.done = done;
+        m_done = done;
     }
 
 }

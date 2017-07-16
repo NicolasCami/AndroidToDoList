@@ -31,37 +31,36 @@ public class TaskListActivity extends AppCompatActivity implements ConfirmDelete
 
     public final static String EXTRA_CATEGORY = "fr.univpau.todolist.CATEGORY";
 
-    List<Task> _tasksList;
-    TaskAdapter _taskAdaper;
-    TaskDAO _tasksDAO;
-    TaskCategoryDAO taskCateogryDAO;
-    TaskCategory taskCategory;
+    List<Task>          m_tasksList;
+    TaskAdapter         m_taskAdaper;
+    TaskDAO             m_tasksDAO;
+    TaskCategoryDAO     m_taskCateogryDAO;
+    TaskCategory        m_taskCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_list);
-        _tasksDAO = new TaskDAO(this);
-        taskCateogryDAO = new TaskCategoryDAO(this);
-        taskCategory = null;
+
+        m_tasksDAO = new TaskDAO(this);
+        m_taskCateogryDAO = new TaskCategoryDAO(this);
+        m_taskCategory = null;
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            taskCategory = (TaskCategory)getIntent().getSerializableExtra(EXTRA_CATEGORY);
-            _tasksList = _tasksDAO.getTasks(taskCategory);
-            Log.i("debug", ""+taskCategory.getId());
+            m_taskCategory = (TaskCategory)getIntent().getSerializableExtra(EXTRA_CATEGORY);
+            m_tasksList = m_tasksDAO.getTasks(m_taskCategory);
         }
         else {
-            _tasksList = _tasksDAO.getAllTasks();
-            Log.i("debug", "NO CATEGORY");
+            m_tasksList = m_tasksDAO.getAllTasks();
         }
 
         ListView listview = (ListView) findViewById(R.id.tasksListView);
-        _taskAdaper = new TaskAdapter(this, R.layout.todolist_item, _tasksList, _tasksDAO);
-        listview.setAdapter(_taskAdaper);
+        m_taskAdaper = new TaskAdapter(this, R.layout.todolist_item, m_tasksList, m_tasksDAO);
+        listview.setAdapter(m_taskAdaper);
 
         Button btnNewTask = (Button) findViewById(R.id.btnNewTask);
-        NewTaskListener newTaskListener = new NewTaskListener(_tasksList, taskCategory, (EditText) findViewById(R.id.editTitle), _taskAdaper, _tasksDAO);
+        NewTaskListener newTaskListener = new NewTaskListener(m_tasksList, m_taskCategory, (EditText) findViewById(R.id.editTitle), m_taskAdaper, m_tasksDAO);
         btnNewTask.setOnClickListener(newTaskListener);
     }
 
@@ -93,23 +92,23 @@ public class TaskListActivity extends AppCompatActivity implements ConfirmDelete
     }
 
     private void deleteTasks() {
-        for(Task task : _tasksList) {
-            _tasksDAO.deleteTask(task.getId());
+        for(Task task : m_tasksList) {
+            m_tasksDAO.deleteTask(task.getId());
         }
-        _tasksList.clear();
-        _taskAdaper.notifyDataSetChanged();
+        m_tasksList.clear();
+        m_taskAdaper.notifyDataSetChanged();
     }
 
     private void deleteTasksDone() {
         List<Task> toRemove = new ArrayList<Task>();
-        for(Task task : _tasksList) {
+        for(Task task : m_tasksList) {
             if(task.isDone()) {
-                _tasksDAO.deleteTask(task.getId());
+                m_tasksDAO.deleteTask(task.getId());
                 toRemove.add(task);
             }
         }
-        _tasksList.removeAll(toRemove);
-        _taskAdaper.notifyDataSetChanged();
+        m_tasksList.removeAll(toRemove);
+        m_taskAdaper.notifyDataSetChanged();
     }
 
     private void deleteCategory() {
@@ -117,10 +116,9 @@ public class TaskListActivity extends AppCompatActivity implements ConfirmDelete
         deleteTasks();
 
         // delete the category
-        if(taskCategory != null)
+        if(m_taskCategory != null)
         {
-            Log.i("debug", "delete " + taskCategory.getId());
-            taskCateogryDAO.deleteTaskCategory(taskCategory.getId());
+            m_taskCateogryDAO.deleteTaskCategory(m_taskCategory.getId());
         }
 
         // leave this activity

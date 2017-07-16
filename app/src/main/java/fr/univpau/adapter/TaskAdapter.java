@@ -17,11 +17,11 @@ import fr.univpau.util.Task;
 
 public class TaskAdapter extends ArrayAdapter<Task> {
 
-    TaskDAO _taskDAO;
+    TaskDAO     m_taskDAO;
 
-    public TaskAdapter(Context context, int textViewResourceId, List<Task> objects, TaskDAO taskSQL) {
+    public TaskAdapter(Context context, int textViewResourceId, List<Task> objects, TaskDAO taskDAO) {
         super(context, textViewResourceId, objects);
-        this._taskDAO = taskSQL;
+        m_taskDAO = taskDAO;
     }
 
     @Override
@@ -56,8 +56,9 @@ public class TaskAdapter extends ArrayAdapter<Task> {
 
         CheckBox doneCheckBox = (CheckBox) rowView.findViewById(R.id.doneCheckBox);
         doneCheckBox.setChecked(task.isDone());
-        DoneTaskListener doneTaskListener = new DoneTaskListener(task, doneCheckBox, this, _taskDAO);
+        DoneTaskListener doneTaskListener = new DoneTaskListener(task, doneCheckBox, this, m_taskDAO);
         rowView.setOnClickListener(doneTaskListener);
+        doneCheckBox.setOnClickListener(doneTaskListener);
 
         return rowView;
     }

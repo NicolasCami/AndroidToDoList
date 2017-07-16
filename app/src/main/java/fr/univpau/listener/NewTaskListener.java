@@ -16,22 +16,22 @@ import fr.univpau.util.TaskCategory;
 
 public class NewTaskListener implements View.OnClickListener {
 
-    List<Task> tasks;
-    TaskCategory taskCategory;
-    EditText editTitle;
-    TaskAdapter taskAdaper;
-    TaskDAO _taskDAO;
+    List<Task>      m_tasks;
+    TaskCategory    m_taskCategory;
+    EditText        m_editTitle;
+    TaskAdapter     m_taskAdaper;
+    TaskDAO         m_taskDAO;
 
     public NewTaskListener() {
 
     }
 
     public NewTaskListener(List<Task> tasks, TaskCategory category, EditText editTitle, TaskAdapter taskAdaper, TaskDAO taskDAO) {
-        this.tasks = tasks;
-        this.taskCategory = category;
-        this.editTitle = editTitle;
-        this.taskAdaper = taskAdaper;
-        _taskDAO = taskDAO;
+        m_tasks = tasks;
+        m_taskCategory = category;
+        m_editTitle = editTitle;
+        m_taskAdaper = taskAdaper;
+        m_taskDAO = taskDAO;
     }
 
     @Override
@@ -41,11 +41,11 @@ public class NewTaskListener implements View.OnClickListener {
         calendar.setTime(trialTime);
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         String dateString = sdf.format(calendar.getTime());
-        Task newTask = new Task(editTitle.getText().toString(), dateString, false, taskCategory);
-        tasks.add(newTask);
-        _taskDAO.insertTask(newTask);
-        taskAdaper.notifyDataSetChanged();
-        editTitle.setText("");
+        Task newTask = new Task(m_editTitle.getText().toString(), dateString, false, m_taskCategory);
+        m_tasks.add(newTask);
+        m_taskDAO.insertTask(newTask);
+        m_taskAdaper.notifyDataSetChanged();
+        m_editTitle.setText("");
     }
 
 }
